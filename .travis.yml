@@ -1,0 +1,30 @@
+sudo: required
+
+services: 
+    - docker
+
+env: 
+   global:
+      - PROJECT=nginx-yahwa
+      - G_TAG=${TRAVIS_TAG}
+      - G_BRANCH=${TRAVIS_BRANCH}
+      - T_BUILD=${TRAVIS_JOB_NUMBER}
+	
+atfer_success:
+    - export D_REPO=${D_USER}/${PROJECT}
+    - export D_TAG=`if [ "x$G_TAG" != "x" ]; then echo $G_TAG; else echo "$G_BRANCH-latest"; fi`
+    - echo "Building docker $D_REPO:travis-$T_BUILD"
+    - docker build -t $D_REPO:travis-$T_BUILD .
+    - echo "Adding additional tag $D_REPO:$D_TAG to travis-$T_BUILD"
+    - docker tag $D_REPO:travis-$T_BUILD $D_REPO:$D_TAG
+    - echo "Logging in to Docker hub as $D_USER"
+    - docker login -u $D_USER -p $D_PASS
+    - echo "Pushing image to $D_REPO"
+    - docker push $D_REPO
+
+notifications:
+    email:
+       recipients:
+           - asm@virtalab.net
+       on_success: always
+       on_failure: always
