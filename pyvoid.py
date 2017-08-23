@@ -1,0 +1,1 @@
+print 'Doing nothing. Just building docker image' 
