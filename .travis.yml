@@ -9,7 +9,7 @@ env:
       - G_TAG=${TRAVIS_TAG}
       - G_BRANCH=${TRAVIS_BRANCH}
       - T_BUILD=${TRAVIS_JOB_NUMBER}
-	
+    
 atfer_success:
     - export D_REPO=${D_USER}/${PROJECT}
     - export D_TAG=`if [ "x$G_TAG" != "x" ]; then echo $G_TAG; else echo "$G_BRANCH-latest"; fi`
