@@ -7,7 +7,7 @@ language: python
 python: 
      - "2.7"
 
-script: pyvoid.py      
+script: python pyvoid.py      
 
 env: 
    global:
